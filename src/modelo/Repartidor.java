@@ -1,9 +1,11 @@
 package modelo;
 
-public abstract class Repartidor {
+public abstract class Repartidor implements Calificable {
     private String codigo;
     private String nombre;
     private boolean disponible;
+    private double calificaciones;
+
 
     public Repartidor (String codigo, String nombre, boolean disponible) {
         if (codigo == null || codigo.isBlank()){
@@ -12,8 +14,8 @@ public abstract class Repartidor {
         if (nombre == null || nombre.isBlank()){
             throw new IllegalArgumentException("El repartidor necesita un nombre");
         }
-        this.codigo = codigo;
-        this.nombre = nombre;
+        this.codigo = codigo.trim();
+        this.nombre = nombre.trim();
         this.disponible = disponible;
     }
 
