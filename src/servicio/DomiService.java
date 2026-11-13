@@ -4,14 +4,7 @@ package servicio;
 
 import java.util.*;
 
-import modelo.Repartidor;
-import modelo.Cliente;
-import modelo.Pedido;
-import modelo.Bici;
-import modelo.Carro;
-import modelo.Moto;
-import modelo.Dron;
-import modelo.Pedido;
+import modelo.*;
 
 
 public class DomiService {
@@ -103,9 +96,60 @@ public class DomiService {
         }
         clientes.remove(cedula);
     }
+    public ArrayList<Cotizacion> cotizarPedido(String cedula, boolean grande) {
+        Cliente cliente = buscarCliente(cedula);
+        double km = obtenerKm(cliente.getBarrio());
+
+        ArrayList<Cotizacion> cotizaciones = new ArrayList<>();
+        for (Repartidor r : repartidores) {
+            if (r.isDisponible() && r.puedeLlevar(km, grande, modoLluvia)) {
+                cotizaciones.add(new Cotizacion(r, r.cotizar(km, modoLluvia), r.calcularTiempo(km)));
+            }
+        }
+        return cotizaciones;
+    }
+    private boolean estaVacio(String texto) {
+        return texto == null || texto.trim().isEmpty();
+    }
+    public Cliente buscarCliente(String cedula) {
+        Cliente cliente = (cedula == null) ? null : clientes.get(cedula.trim());
+        if (cliente == null) {
+            throw new IllegalArgumentException("No existe un cliente con la cédula " + cedula + ".");
+        }
+        return cliente;
+    }
+    // Los km salen del mapa, nunca los escribe el operador.
+    public double obtenerKm(String barrio) {private HashMap<String, Double> distancias = new HashMap<>();
+        return distanciaBarrios.get(Barrios.valueOf(barrio));
+    }
 
     public Pedido crearPedido(String cedula, String descripcion, boolean esGrande) {
-        return null;
+        if (estaVacio(descripcion)) {
+            throw new IllegalArgumentException("La descripción del pedido no puede estar vacía.");
+        }
+        ArrayList<Cotizacion> cotizaciones = cotizarPedido(cedula, esGrande);
+        if (cotizaciones.isEmpty()) {
+            throw new IllegalArgumentException("Ningún repartidor disponible puede llevar este pedido. No se creó.");
+        }
+
+        // Igual que buscar el número menor de una lista: se guarda el primero
+        // como "el mejor hasta ahora" y se compara con cada uno de los demás.
+        Cotizacion mejor = cotizaciones.get(0);
+        for (Cotizacion c : cotizaciones) {
+            if (c.esMejorQue(mejor)) {
+                mejor = c;
+            }
+        }
+
+        Cliente cliente = buscarCliente(cedula);
+        Repartidor elegido = mejor.getRepartidor();
+        Pedido pedido = new Pedido(cliente, descripcion, esGrande, obtenerKm(cliente.getBarrio()),
+                elegido, mejor.getCosto(), mejor.getTiempo());
+
+        elegido.setDisponible(false);
+        pedidos.add(pedido);
+
+        return pedido;
     }
 
     public void entregarPedido(int numero, int calificacion) {
