@@ -42,7 +42,7 @@ public abstract class Repartidor implements Calificable {
 
     public abstract double calcularTiempo(double km);
 
-    public abstract boolean puedeLlevar(double km, boolean esGrande);
+    public abstract boolean puedeLlevar(double km, boolean esGrande, boolean lluvia);
 
     @Override
     public void agregarCalificacion(int calificacion) {
