@@ -2,12 +2,7 @@
 
 package servicio;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import modelo.Repartidor;
 import modelo.Cliente;
@@ -16,6 +11,7 @@ import modelo.Bici;
 import modelo.Carro;
 import modelo.Moto;
 import modelo.Dron;
+import modelo.Pedido;
 
 
 public class DomiService {
@@ -56,8 +52,56 @@ public class DomiService {
 
     }
 
-    public void registrarCliente(Cliente cliente) {
+    private String normalizarBarrio(String barrio) {
+        if (barrio == null || barrio.isBlank()) {
+            throw new IllegalArgumentException("El barrio no puede estar vacío.");
+        }
+        String limpio = barrio.trim();
+        for (String b : barrios) {
+            if (b.equalsIgnoreCase(limpio)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Sin cobertura en el barrio: " + limpio);
+    }
 
+    public void registrarCliente(Cliente cliente) {
+        if (cliente == null) {
+            throw new IllegalArgumentException("Datos del ciente invalidos");
+        }
+        if (clientes.containsKey(cliente.getCedula())) {
+            throw new IllegalArgumentException("Ya existe un cliente registrado con la cedula" + cliente.getCedula());
+        }
+        String barrioValido = normalizarBarrio(cliente.getBarrio());
+        cliente.setBarrio(barrioValido);
+        clientes.put(cliente.getCedula(), cliente);
+    }
+
+    public Collection<Cliente> listarClientes() {
+        return clientes.values();
+    }
+
+    public void editarCliente(String cedula, String nuevoTelefono, String nuevoBarrio, String nuevaDireccion) {
+        Cliente cliente = clientes.get(cedula);
+        if (cliente == null) {
+            throw new IllegalArgumentException("No se encontró ningún cliente con cédula: " + cedula);
+        }
+        String barrioValido = normalizarBarrio(nuevoBarrio);
+        cliente.setTelefono(nuevoTelefono);
+        cliente.setBarrio(barrioValido);
+        cliente.setDireccion(nuevaDireccion);
+    }
+
+    public void eliminarCliente(String cedula) {
+        if (!clientes.containsKey(cedula)) {
+            throw new IllegalArgumentException("No se encontró ningún cliente con cédula: " + cedula);
+        }
+        for (Pedido p : pedidos) {
+            if (p.getCliente().getCedula().equals(cedula) && p.getEstado() == Pedido.EstadoPedido.EN_CAMINO) {
+                throw new IllegalArgumentException("No se puede eliminar el cliente porque tiene un pedido EN_CAMINO (#" + p.getNumero() + ").");
+            }
+        }
+        clientes.remove(cedula);
     }
 
     public Pedido crearPedido(String cedula, String descripcion, boolean esGrande) {
