@@ -7,7 +7,7 @@ public class Menu {
     public void mostrarMenu(boolean modoLluvia) {
         System.out.println("============== DOMI · MENU  ==============");
         if (modoLluvia) {
-            System.out.println("\uD83C\uDF27\uFE0F '''' MODO LLUVIA ACTIVO '''' \uD83C\uDF27\uFE0F");
+            System.out.println("🌧️ '''' MODO LLUVIA ACTIVO '''' 🌧️");
         }
         System.out.println("CLIENTES        1. Registrar  2. Listar");
         System.out.println("                3. Editar     4. Eliminar");
