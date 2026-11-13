@@ -104,6 +104,34 @@ public class DomiService {
         clientes.remove(cedula);
     }
 
+    public void registrarRepartidor(Repartidor nuevo) {
+        if (nuevo == null) {
+            throw new IllegalArgumentException("Datos de repartidor no validos");
+        }
+        for (Repartidor r : repartidores) {
+            if (r.getCodigo().equalsIgnoreCase(nuevo.getCodigo())) {
+                throw new IllegalArgumentException("Ya existe un repartidor con el código: " + nuevo.getCodigo());
+            }
+        }
+        repartidores.add(nuevo);
+    }
+
+    public List<Repartidor> listarRepartidores() {
+        return repartidores;
+    }
+
+    public Repartidor cambiarDisponibilidad(String codigo) {
+        for (Repartidor r : repartidores) {
+            if (r.getCodigo().equalsIgnoreCase(codigo.trim())) {
+                r.setDisponible(!r.isDisponible());
+                return r;
+            }
+        }
+        throw new IllegalArgumentException("No se encontró ningún repartidor con código: " + codigo);
+    }
+
+
+
     public Pedido crearPedido(String cedula, String descripcion, boolean esGrande) {
         return null;
     }
@@ -114,6 +142,15 @@ public class DomiService {
 
     public void cancelarPedido(int numero) {
 
+    }
+
+    public boolean alternarModoLluvia() {
+        this.modoLluvia = !this.modoLluvia;
+        return this.modoLluvia;
+    }
+
+    public boolean isModoLluvia() {
+        return modoLluvia;
     }
 
     public String cierreDelDia() {
