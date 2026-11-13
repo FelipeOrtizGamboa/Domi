@@ -1,4 +1,4 @@
 package modelo;
 
-public class Bici {
+public class Bici extends Repartidor {
 }
