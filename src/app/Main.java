@@ -1,13 +1,65 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+// Main principal Domi
+package app;
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Menu menu = new Menu();
+
+        int opcion = -1;
+
+        do {
+            try {
+                menu.mostrarMenu(false);
+                System.out.println("Ingresa un numero: ");
+                //String numero = scanner.nextLine();
+                opcion = Integer.parseInt(scanner.nextLine());
+
+                switch (opcion) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    case 9:
+                        break;
+                    case 10:
+                        break;
+                    case 11:
+                        break;
+                    case 12:
+                        break;
+                    case 13:
+                        break;
+                    default:
+                        System.out.println("valor ingresado fuera del rango 0-13");
+                        break;
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("ERROR: debes ingresar un numero valido");
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } while (opcion != 0);
+        scanner.close();
     }
+
 }

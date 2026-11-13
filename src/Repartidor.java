@@ -4,6 +4,7 @@ public abstract class Repartidor {
     private boolean disponible;
     private double calificaciones;
 
+
     public Repartidor (String codigo, String nombre, boolean disponible) {
         if (codigo == null || codigo.isBlank()){
             throw new IllegalArgumentException("El repartidor necesita un código");
