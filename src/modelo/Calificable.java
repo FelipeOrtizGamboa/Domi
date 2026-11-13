@@ -1,4 +1,6 @@
 package modelo;
 
-public class Calificable {
+public interface Calificable {
+    void agregarCalificacion(int calificacion);
+    double obtenerPromedio();
 }
