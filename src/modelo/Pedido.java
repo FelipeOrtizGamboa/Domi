@@ -1,5 +1,6 @@
 package modelo;
 
+
 public class Pedido {
 
     public enum EstadoPedido {
@@ -15,12 +16,12 @@ public class Pedido {
     private boolean esGrande;
     private double km;
     private Repartidor repartidorAsignado;
-    private long costo;
+    private double costo;
     private double tiempo;
     private EstadoPedido estado;
 
     public Pedido(Cliente cliente, String descripcion, boolean esGrande, double km,
-                  Repartidor repartidorAsignado, long costo, double tiempo, EstadoPedido estado) {
+                  Repartidor repartidorAsignado, double costo, double tiempo, EstadoPedido estado) {
         if (cliente == null) {
             throw new IllegalArgumentException("El pedido debe tener info del cliente.");
         }
@@ -46,7 +47,7 @@ public class Pedido {
         this.numero = siguienteNumero;
         siguienteNumero ++;
         this.cliente = cliente;
-        this.descripcion = descripcion;
+        this.descripcion = descripcion.trim();
         this.esGrande = esGrande;
         this.km = km;
         this.repartidorAsignado = repartidorAsignado;
@@ -79,7 +80,7 @@ public class Pedido {
         return repartidorAsignado;
     }
 
-    public long getCosto() {
+    public double getCosto() {
         return costo;
     }
 
@@ -92,6 +93,12 @@ public class Pedido {
     }
 
     public void setEstado(EstadoPedido estado) {
+        if (estado == null) {
+            throw new IllegalArgumentException("El estado del pedido no puede ser nulo.");
+        }
+        if (this.estado == EstadoPedido.ENTREGADO || this.estado == EstadoPedido.CANCELADO) {
+            throw new IllegalStateException("No se puede cambiar el estado de un pedido que ya fue " + this.estado);
+        }
         this.estado = estado;
     }
 }
