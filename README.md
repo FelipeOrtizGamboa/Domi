@@ -4,7 +4,8 @@ Aplicación de consola desarrollada en Java puro para optimizar la operación lo
 
 
 ## 🎥 Video Demo
-+ Enlace al video:## Preguntas de la sección 6.3
++ Enlace al video:(https://generationye-my.sharepoint.com/:f:/g/personal/felipe_ortiz_genstudents_org/IgAGQ8N3Md9_RZPwl-P7TAJhARw2bOxY-N2Zeb3gsZRENhc?e=8N981O)
+  
 
 **¿Por qué un mapa para los clientes y no una lista?** Porque siempre buscamos al cliente por la cédula. Con el HashMap hacemos `clientes.get(cedula)` y llega directo; con una lista habría que recorrerla cliente por cliente hasta encontrarlo.
 
